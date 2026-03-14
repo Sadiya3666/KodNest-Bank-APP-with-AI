@@ -1,5 +1,5 @@
 const database = require('../config/database');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const logger = require('../utils/logger');
 
 class BankUserModel {

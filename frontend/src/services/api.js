@@ -61,13 +61,23 @@ export const apiRequest = {
 
 // Utility function to handle API errors
 export const handleApiError = (error) => {
-  if (error.response?.data?.message) {
-    return error.response.data.message;
+  // Check for response data errors
+  if (error.response?.data) {
+    const data = error.response.data;
+    
+    // Check various common error message locations
+    if (typeof data.message === 'string') return data.message;
+    if (typeof data.error === 'string') return data.error;
+    if (data.error && typeof data.error.message === 'string') return data.error.message;
+    if (Array.isArray(data.details) && data.details.length > 0) {
+      if (typeof data.details[0].message === 'string') return data.details[0].message;
+    }
   }
-  if (error.response?.data?.error) {
-    return error.response.data.error;
-  }
-  return error.message || 'An unexpected error occurred';
+  
+  // Check for Axios error message
+  if (error.message) return error.message;
+  
+  return 'An unexpected error occurred';
 };
 
 export default api;
