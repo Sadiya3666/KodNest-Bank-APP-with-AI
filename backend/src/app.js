@@ -84,7 +84,9 @@ const corsOptions = {
       allowedOrigins.push(...process.env.ALLOWED_ORIGINS.split(','));
     }
 
-    if (allowedOrigins.indexOf(origin) !== -1) {
+    const isVercelOrigin = origin && (origin.endsWith('.vercel.app') || origin.includes('vercel.app'));
+
+    if (!origin || allowedOrigins.indexOf(origin) !== -1 || isVercelOrigin) {
       callback(null, true);
     } else {
       logger.logSecurity('CORS_VIOLATION', 'medium', {
