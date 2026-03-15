@@ -35,9 +35,20 @@ const database = require('./config/database');
 // Create Express app
 const app = express();
 
-// Global Debug Logger
+// Global Manual CORS & Debug Logger
 app.use((req, res, next) => {
-  console.log(`[DEBUG] Incoming Request: ${req.method} ${req.url} (Original: ${req.originalUrl})`);
+  const origin = req.headers.origin;
+  console.log(`[DEBUG] Request: ${req.method} ${req.url} from ${origin}`);
+  
+  // Force headers for any origin
+  res.header('Access-Control-Allow-Origin', origin || '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
   next();
 });
 
