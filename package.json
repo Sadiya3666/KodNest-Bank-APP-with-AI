@@ -7,7 +7,7 @@
         "backend"
     ],
     "scripts": {
-        "build": "cd frontend && NODE_OPTIONS=--max-old-space-size=4096 GENERATE_SOURCEMAP=false CI=false npm run build",
+        "build": "cd frontend && NODE_OPTIONS=--max-old-space-size=4096 GENERATE_SOURCEMAP=false CI=false npm run build && cd .. && cp -r frontend/build public",
         "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
         "dev:frontend": "npm start --workspace=frontend",
         "dev:backend": "npm run dev --workspace=backend",

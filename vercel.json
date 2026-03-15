@@ -8,23 +8,23 @@
         },
         {
             "source": "/static/(.*)",
-            "destination": "/frontend/build/static/$1"
+            "destination": "/public/static/$1"
         },
         {
             "source": "/manifest.json",
-            "destination": "/frontend/build/manifest.json"
+            "destination": "/public/manifest.json"
         },
         {
             "source": "/favicon.ico",
-            "destination": "/frontend/build/favicon.ico"
+            "destination": "/public/favicon.ico"
         },
         {
             "source": "/logo192.png",
-            "destination": "/frontend/build/logo192.png"
+            "destination": "/public/logo192.png"
         },
         {
             "source": "/(.*)",
-            "destination": "/frontend/build/index.html"
+            "destination": "/public/index.html"
         }
     ]
 }
