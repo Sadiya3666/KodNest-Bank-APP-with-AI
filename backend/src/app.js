@@ -63,7 +63,12 @@ app.use(helmet({
 }));
 
 // Super-permissive CORS for production
-app.use(cors()); // This allows all origins by default (Standard fix)
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin'],
+  credentials: true
+}));
 
 // Custom security headers
 app.use(securityHeaders);
