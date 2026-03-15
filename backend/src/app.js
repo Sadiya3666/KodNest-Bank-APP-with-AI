@@ -64,39 +64,7 @@ app.use(helmet({
 
 // CORS configuration
 const corsOptions = {
-  origin: function (origin, callback) {
-    // Allow requests with no origin (like mobile apps or curl requests)
-    if (!origin) return callback(null, true);
-
-    // In development, allow all origins
-    if (process.env.NODE_ENV === 'development') {
-      return callback(null, true);
-    }
-
-    // In production, allow specific origins
-    const allowedOrigins = [
-      'http://localhost:3000',
-      'https://kodbank.example.com',
-      'https://www.kodbank.example.com'
-    ];
-
-    if (process.env.ALLOWED_ORIGINS) {
-      allowedOrigins.push(...process.env.ALLOWED_ORIGINS.split(','));
-    }
-
-    const isVercelOrigin = origin && (origin.endsWith('.vercel.app') || origin.includes('vercel.app'));
-    const isWildcard = allowedOrigins.includes('*');
-
-    if (!origin || allowedOrigins.indexOf(origin) !== -1 || isVercelOrigin || isWildcard) {
-      callback(null, true);
-    } else {
-      logger.logSecurity('CORS_VIOLATION', 'medium', {
-        origin,
-        allowedOrigins
-      });
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
+  origin: true, // This automatically allows whatever URL is calling it (Perfect for split frontend/backend)
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'],

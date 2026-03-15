@@ -17,25 +17,19 @@ module.exports = async (req, res) => {
     return;
   }
 
-  // Ensure database tables exist (Run migrations on first request)
+  // Ensure database is ready
   if (!isInitialized) {
     try {
-      console.log('Production initialization: checking database...');
-      // Test connection
-      await database.testConnection();
-      
-      // We run migrations automatically to ensure tables exist
-      // In production, we usually check a flag or just run them (they are idempotent)
-      if (process.env.RUN_MIGRATIONS === 'true' || process.env.NODE_ENV === 'production') {
-        console.log('Running automatic migrations...');
+      if (process.env.RUN_MIGRATIONS === 'true') {
+        console.log('Production initialization: running migrations...');
         await database.runMigrations();
+      } else {
+        await database.testConnection();
       }
-      
       isInitialized = true;
-      console.log('Initialization complete.');
     } catch (error) {
-      console.error('Initialization failed:', error);
-      // We don't mark as initialized so it retries on next request
+      console.error('Initialization warning (continuing...):', error.message);
+      // Don't block the actual request
     }
   }
   
