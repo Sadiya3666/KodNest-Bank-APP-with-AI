@@ -7,8 +7,12 @@
             "destination": "/api/index.js"
         },
         {
+            "source": "/static/(.*)",
+            "destination": "/frontend/build/static/$1"
+        },
+        {
             "source": "/(.*)",
-            "destination": "/index.html"
+            "destination": "/frontend/build/index.html"
         }
     ]
 }
