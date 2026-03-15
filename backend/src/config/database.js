@@ -196,10 +196,13 @@ class Database {
       // Get migration files
       const fs = require('fs');
       const path = require('path');
-      const migrationsDir = path.join(__dirname, '../../database/migrations');
+      // Resolve migrations path more robustly for Vercel
+      const migrationsDir = process.env.VERCEL 
+        ? path.join(process.cwd(), 'backend/database/migrations')
+        : path.join(__dirname, '../../database/migrations');
 
       if (!fs.existsSync(migrationsDir)) {
-        logger.info('No migrations directory found');
+        logger.info(`No migrations directory found at: ${migrationsDir}`);
         return;
       }
 

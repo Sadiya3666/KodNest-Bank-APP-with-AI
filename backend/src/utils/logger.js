@@ -52,8 +52,8 @@ const transports = [
   })
 ];
 
-// Add file transports only in production or if LOG_TO_FILE is enabled
-if (process.env.NODE_ENV === 'production' || process.env.LOG_TO_FILE === 'true') {
+// Add file transports only if not on Vercel and (production or LOG_TO_FILE is enabled)
+if (!process.env.VERCEL && (process.env.NODE_ENV === 'production' || process.env.LOG_TO_FILE === 'true')) {
   // Create logs directory if it doesn't exist
   const fs = require('fs');
   const logsDir = path.join(__dirname, '../../logs');
@@ -284,7 +284,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 // Production optimizations
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === 'production' && !process.env.VERCEL) {
   // Handle uncaught exceptions
   logger.exceptions.handle(
     new winston.transports.File({
@@ -300,6 +300,8 @@ if (process.env.NODE_ENV === 'production') {
   );
 
   logger.info('Logger initialized in production mode');
+} else if (process.env.NODE_ENV === 'production' && process.env.VERCEL) {
+  logger.info('Logger initialized in Vercel production mode (Console only)');
 }
 
 // Export the logger
